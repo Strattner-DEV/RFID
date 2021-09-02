@@ -1,6 +1,6 @@
 # RFID
 
-Requisitos de Cadastros:
+Itens de Cadastro:
 
 * Nome
 * Refêrencia/Código do produto
