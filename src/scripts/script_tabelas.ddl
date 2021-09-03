@@ -1,5 +1,5 @@
 -- Gerado por Oracle SQL Developer Data Modeler 21.2.0.183.1957
---   em:        2021-09-03 14:22:52 BRT
+--   em:        2021-09-03 15:47:51 BRT
 --   site:      Oracle Database 11g
 --   tipo:      Oracle Database 11g
 
@@ -9,147 +9,102 @@
 
 -- predefined type, no DDL - XMLTYPE
 
-CREATE TABLE equipamentos (
-    id_equipamentos  NUMBER(5) NOT NULL,
-    id_etapa         NUMBER(5) NOT NULL,
-    nome_equipamento VARCHAR2(150) NOT NULL
+CREATE TABLE equipments (
+    equip_id       NUMBER(5) NOT NULL,
+    equip_stage_id NUMBER(5) NOT NULL,
+    equip_name     VARCHAR2(150) NOT NULL
 );
 
-ALTER TABLE equipamentos ADD CONSTRAINT equipamentos_pk PRIMARY KEY ( id_equipamentos );
+ALTER TABLE equipments ADD CONSTRAINT equipments_pk PRIMARY KEY ( equip_id );
 
-CREATE TABLE etapas (
-    id_etapa    NUMBER(5) NOT NULL,
-    id_workflow NUMBER(5) NOT NULL,
-    descricao   VARCHAR2(100)
+CREATE TABLE hospitals (
+    hospital_id   NUMBER(9) NOT NULL,
+    hospital_name VARCHAR2(200) NOT NULL
 );
 
-ALTER TABLE etapas ADD CONSTRAINT etapas_pk PRIMARY KEY ( id_etapa );
-
-CREATE TABLE hospitais (
-    id_hospital   NUMBER(9) NOT NULL,
-    nome_hospital VARCHAR2(200) NOT NULL
-);
-
-ALTER TABLE hospitais ADD CONSTRAINT hospitais_pk PRIMARY KEY ( id_hospital );
+ALTER TABLE hospitals ADD CONSTRAINT hospitais_pk PRIMARY KEY ( hospital_id );
 
 CREATE TABLE "INSTR/EQUIP" (
-    id_relacao      NUMBER(5) NOT NULL,
-    id_instrumental NUMBER(5) NOT NULL,
-    id_equipamento  NUMBER(5) NOT NULL
+    "INSTR/EQUIP_ID" NUMBER(5) NOT NULL,
+    instr_id         NUMBER(5) NOT NULL,
+    equip_id         NUMBER(5) NOT NULL
 );
 
-ALTER TABLE "INSTR/EQUIP" ADD CONSTRAINT "INSTR/EQUIP_PK" PRIMARY KEY ( id_relacao );
+ALTER TABLE "INSTR/EQUIP" ADD CONSTRAINT "INSTR/EQUIP_PK" PRIMARY KEY ( "INSTR/EQUIP_ID" );
 
-CREATE TABLE "INSTR/PROCESSO" (
-    id_relacao      NUMBER(5) NOT NULL,
-    id_processo     NUMBER(5) NOT NULL,
-    id_instrumental NUMBER(5) NOT NULL,
-    resposta        CHAR(1) NOT NULL
+CREATE TABLE "INSTR/PROCESS" (
+    "INSTR/PROCESS_ID"     NUMBER(5) NOT NULL,
+    process_id             NUMBER(5) NOT NULL,
+    instr_id               NUMBER(5) NOT NULL,
+    "INSTR/PROCESS_ANSWER" CHAR(1) NOT NULL
 );
 
-ALTER TABLE "INSTR/PROCESSO" ADD CONSTRAINT "INSTR/PROCESSO_PK" PRIMARY KEY ( id_relacao );
+ALTER TABLE "INSTR/PROCESS" ADD CONSTRAINT "INSTR/PROCESSO_PK" PRIMARY KEY ( "INSTR/PROCESS_ID" );
 
-CREATE TABLE instrumentais (
-    id_instrumental NUMBER(5) NOT NULL,
-    nome            VARCHAR2(150) NOT NULL,
-    codigo          VARCHAR2(150) NOT NULL,
-    especialidade   VARCHAR2(150) NOT NULL,
-    lote            VARCHAR2(150) NOT NULL,
-    codigo_rfid     VARCHAR2(150),
-    url_imagem      VARCHAR2(200)
+CREATE TABLE instrumentals (
+    instr_id        NUMBER(5) NOT NULL,
+    instr_name      VARCHAR2(150) NOT NULL,
+    instr_code      VARCHAR2(150) NOT NULL,
+    instr_specialty VARCHAR2(150) NOT NULL,
+    instr_batch     VARCHAR2(150) NOT NULL,
+    instr_rfid_code VARCHAR2(150),
+    instr_image_url VARCHAR2(200)
 );
 
-ALTER TABLE instrumentais ADD CONSTRAINT instrumentais_pk PRIMARY KEY ( id_instrumental );
+ALTER TABLE instrumentals ADD CONSTRAINT instrumentals_pk PRIMARY KEY ( instr_id );
 
-CREATE TABLE processos (
-    id_processo   NUMBER(5) NOT NULL,
-    id_etapa      NUMBER(5) NOT NULL,
-    nome_processo VARCHAR2(150) NOT NULL
+CREATE TABLE processes (
+    process_id       NUMBER(5) NOT NULL,
+    process_stage_id NUMBER(5) NOT NULL,
+    process_name     VARCHAR2(150) NOT NULL
 );
 
-ALTER TABLE processos ADD CONSTRAINT processos_pk PRIMARY KEY ( id_processo );
+ALTER TABLE processes ADD CONSTRAINT processes_pk PRIMARY KEY ( process_id );
+
+CREATE TABLE stages (
+    stage_id    NUMBER(5) NOT NULL,
+    stage_wf_id NUMBER(5) NOT NULL,
+    stage_desc  VARCHAR2(100)
+);
+
+ALTER TABLE stages ADD CONSTRAINT stages_pk PRIMARY KEY ( stage_id );
 
 CREATE TABLE workflows (
-    id_workflow NUMBER(5) NOT NULL,
-    id_hospital NUMBER(5) NOT NULL,
-    descricao   VARCHAR2(100) NOT NULL
+    wf_id          NUMBER(5) NOT NULL,
+    wf_hospital_id NUMBER(5) NOT NULL,
+    wf_desc        VARCHAR2(100) NOT NULL
 );
 
-ALTER TABLE workflows ADD CONSTRAINT workflows_pk PRIMARY KEY ( id_workflow );
+ALTER TABLE workflows ADD CONSTRAINT workflows_pk PRIMARY KEY ( wf_id );
 
-ALTER TABLE equipamentos
-    ADD CONSTRAINT equipamentos_etapas_fk FOREIGN KEY ( id_etapa )
-        REFERENCES etapas ( id_etapa );
-
-ALTER TABLE "INSTR/EQUIP"
-    ADD CONSTRAINT "INSTR/EQUIP_EQUIPAMENTOS_FK" FOREIGN KEY ( id_equipamento )
-        REFERENCES equipamentos ( id_equipamentos );
+ALTER TABLE equipments
+    ADD CONSTRAINT equipments_stage_fk FOREIGN KEY ( equip_stage_id )
+        REFERENCES stages ( stage_id );
 
 ALTER TABLE "INSTR/EQUIP"
-    ADD CONSTRAINT "INSTR/EQUIP_INSTRUMENTAIS_FK" FOREIGN KEY ( id_instrumental )
-        REFERENCES instrumentais ( id_instrumental );
+    ADD CONSTRAINT "INSTR/EQUIP_EQUIPAMENTOS_FK" FOREIGN KEY ( equip_id )
+        REFERENCES equipments ( equip_id );
 
-ALTER TABLE "INSTR/PROCESSO"
-    ADD CONSTRAINT "INSTR/PROCESSO_FK_INSTR" FOREIGN KEY ( id_instrumental )
-        REFERENCES instrumentais ( id_instrumental );
+ALTER TABLE "INSTR/EQUIP"
+    ADD CONSTRAINT "INSTR/EQUIP_INSTRUMENTAIS_FK" FOREIGN KEY ( instr_id )
+        REFERENCES instrumentals ( instr_id );
 
-ALTER TABLE "INSTR/PROCESSO"
-    ADD CONSTRAINT "INSTR/PROCESSO_FK_PROCESSOS" FOREIGN KEY ( id_processo )
-        REFERENCES processos ( id_processo );
+ALTER TABLE "INSTR/PROCESS"
+    ADD CONSTRAINT "INSTR/PROCESSO_FK_INSTR" FOREIGN KEY ( instr_id )
+        REFERENCES instrumentals ( instr_id );
 
-ALTER TABLE processos
-    ADD CONSTRAINT processos_etapas_fk FOREIGN KEY ( id_etapa )
-        REFERENCES etapas ( id_etapa );
+ALTER TABLE "INSTR/PROCESS"
+    ADD CONSTRAINT "INSTR/PROCESSO_FK_PROCESSOS" FOREIGN KEY ( process_id )
+        REFERENCES processes ( process_id );
 
-ALTER TABLE etapas
-    ADD CONSTRAINT table_3_workflows_fk FOREIGN KEY ( id_workflow )
-        REFERENCES workflows ( id_workflow );
+ALTER TABLE processes
+    ADD CONSTRAINT processos_etapas_fk FOREIGN KEY ( process_stage_id )
+        REFERENCES stages ( stage_id );
+
+ALTER TABLE stages
+    ADD CONSTRAINT stages_workflows_fk FOREIGN KEY ( stage_wf_id )
+        REFERENCES workflows ( wf_id );
 
 ALTER TABLE workflows
-    ADD CONSTRAINT workflows_fk_hospitais FOREIGN KEY ( id_hospital )
-        REFERENCES hospitais ( id_hospital );
-
-
-
--- Relatório do Resumo do Oracle SQL Developer Data Modeler: 
--- 
--- CREATE TABLE                             8
--- CREATE INDEX                             0
--- ALTER TABLE                             16
--- CREATE VIEW                              0
--- ALTER VIEW                               0
--- CREATE PACKAGE                           0
--- CREATE PACKAGE BODY                      0
--- CREATE PROCEDURE                         0
--- CREATE FUNCTION                          0
--- CREATE TRIGGER                           0
--- ALTER TRIGGER                            0
--- CREATE COLLECTION TYPE                   0
--- CREATE STRUCTURED TYPE                   0
--- CREATE STRUCTURED TYPE BODY              0
--- CREATE CLUSTER                           0
--- CREATE CONTEXT                           0
--- CREATE DATABASE                          0
--- CREATE DIMENSION                         0
--- CREATE DIRECTORY                         0
--- CREATE DISK GROUP                        0
--- CREATE ROLE                              0
--- CREATE ROLLBACK SEGMENT                  0
--- CREATE SEQUENCE                          0
--- CREATE MATERIALIZED VIEW                 0
--- CREATE MATERIALIZED VIEW LOG             0
--- CREATE SYNONYM                           0
--- CREATE TABLESPACE                        0
--- CREATE USER                              0
--- 
--- DROP TABLESPACE                          0
--- DROP DATABASE                            0
--- 
--- REDACTION POLICY                         0
--- 
--- ORDS DROP SCHEMA                         0
--- ORDS ENABLE SCHEMA                       0
--- ORDS ENABLE OBJECT                       0
--- 
--- ERRORS                                   0
--- WARNINGS                                 0
+    ADD CONSTRAINT workflows_fk_hospitals FOREIGN KEY ( wf_hospital_id )
+        REFERENCES hospitals ( hospital_id );
