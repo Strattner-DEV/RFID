@@ -6,7 +6,7 @@
 ![Estrutura](https://github.com/Strattner-DEV/RFID/blob/main/docs/diagramas/estrutura.png "Estrutura")
 
 ### Tabelas Modeladas:
-![Tabelas](https://github.com/Strattner-DEV/RFID/blob/main/docs/diagramas/tabelas_modeladas.png "Tabelas")
+![Tabelas](https://github.com/Strattner-DEV/RFID/blob/main/docs/diagramas/Oracle%20SQL%20Developer%20Data%20Modeler%20_%20Relational_1%20(modelagem_RFID)%2013_09_2021%2017_37_32.png "Tabelas")
 
 ### Protótipo das Telas de Cadastro
 
