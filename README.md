@@ -18,3 +18,13 @@
 
 ![Instrumentais](https://github.com/Strattner-DEV/RFID/blob/main/docs/diagramas/Telas%20Cadastro-Cadastro%20Instrumentais.drawio.png "Instrumentais")
 
+## Screenshoots
+
+![Tela](https://github.com/Strattner-DEV/RFID/blob/main/docs/screenshots/tela%20inicial.png "Tela")
+![Cadastro](https://github.com/Strattner-DEV/RFID/blob/main/docs/screenshots/wizard.png "Cadastro")
+![Visualização](https://github.com/Strattner-DEV/RFID/blob/main/docs/screenshots/vizauliza%C3%A7%C3%A3o.png "Visualização")
+![Equipamentos](https://github.com/Strattner-DEV/RFID/blob/main/docs/screenshots/equipamento.png "Equipamentos")
+![Instrumentais](https://github.com/Strattner-DEV/RFID/blob/main/docs/screenshots/instrumentais.png "Instrumentais")
+
+
+
